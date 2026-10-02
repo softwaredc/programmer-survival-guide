@@ -1,0 +1,122 @@
+# 许可协议
+
+本项目采用**双许可**：内容用 CC BY-NC-SA 4.0，代码用 MIT。
+
+---
+
+## 适用范围
+
+| 目录 | 许可 | 说明 |
+|---|---|---|
+| `content/` | **CC BY-NC-SA 4.0** | 文字内容，构成对原作品的改编须采用相同许可 |
+| `cases/` | **CC BY-NC-SA 4.0** | 同内容。投稿者默认同意此许可 |
+| `templates/` | **CC BY-NC-SA 4.0** | 文档模板 |
+| `tools/` | **MIT** | 见 [tools/LICENSE](tools/LICENSE) |
+| `scripts/` | **MIT** | 同上 |
+| `README.md` 等根目录文档 | **CC BY-NC-SA 4.0** | |
+
+---
+
+## 第一部分：内容许可 —— CC BY-NC-SA 4.0
+
+本项目的文字内容（`content/`、`cases/`、`templates/` 及根目录文档）采用
+**知识共享署名 - 非商业性使用 - 相同方式共享 4.0 国际许可协议**（CC BY-NC-SA 4.0）。
+
+### 关于商业授权的保留
+
+本仓库作者（著作权人）**保留对本人创作内容进行商业授权的权利**。
+
+上述 CC BY-NC-SA 4.0 许可，是作者**授予公众的非独占许可**。其中的 NC（非商业性使用）
+条款约束的是**获得该免费授权的第三方**，**不限制著作权人本人**。
+
+因此，作者有权在不违反本许可的前提下，另行将本人创作的内容用于或授权用于商业用途
+（包括但不限于出版、付费内容、企业培训、商业授权）。
+
+**但请注意**：社区贡献者提交的内容，其著作权归贡献者所有。贡献者通过同意
+[CLA](CLA.md) 授予项目方包含商业使用在内的使用权。**未同意 CLA 的贡献内容，
+不在上述商业授权范围内。**
+
+> 保留 NC 条款是刻意的：它用于阻止营销号将本项目内容用于商业用途。
+> 保留作者自身的商业授权权利同样是刻意的：两者并不冲突。
+
+### 你可以做什么
+
+- ✅ **分享** —— 复制、转发、转载（含商业性媒体之外的任何场景）
+- ✅ **改编** —— 修改、翻译、改写、二次创作
+
+### 但必须遵守以下条件
+
+1. **署名（BY）**
+   你必须明确注明来源：项目名称《程序员生存指南》与原始链接。
+   不能暗示原作者认可你的使用方式。
+
+2. **非商业性使用（NC）**
+   **你不得将内容用于商业目的。**
+   包括但不限于：付费社群内容、付费专栏、收费课程、知识付费产品、
+   带商业推广性质的转载、以营利为目的的合集出版物。
+
+   > 这一条是为了防止营销号洗稿商用——这是内容型开源项目的真实威胁。
+
+3. **相同方式共享（SA）**
+   如果你对内容进行改编，**你的衍生作品必须采用相同的 CC BY-NC-SA 4.0 许可**。
+   这保证了内容始终保持开放。
+
+### 完整法律文本
+
+完整条款见：
+**https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh**
+
+（中文官方译本，法律效力以英文原版为准）
+
+---
+
+## 第二部分：代码许可 —— MIT
+
+Copyright (c) 2026 《程序员生存指南》 contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## 为什么这样切分
+
+内容用 NC-SA，是为了：
+- 防止营销号洗稿商用（NC）
+- 保证衍生内容继续开放（SA）
+
+代码用 MIT，是为了：
+- 工具代码应当可以被自由使用、嵌入、改造
+- 宽松许可对工具类代码更有利，也能被更多项目引用
+
+---
+
+## 投稿者的默认授权
+
+向本项目提交内容 PR 或投稿案例，即表示你同意：
+
+1. 你拥有该内容的著作权，或已获得授权
+2. 你同意将内容以 **CC BY-NC-SA 4.0** 许可发布给本项目
+3. 你同意本仓库对内容进行编辑、合并、脱敏处理
+4. 案例投稿**不得包含任何公司真实名称或可识别个人身份的信息**
+
+---
+
+## 联系
+
+许可相关问题，请在仓库 Discussions 提问。

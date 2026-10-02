@@ -1,0 +1,73 @@
+name: 内容检查
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/**'
+      - 'scripts/**'
+      - '.github/workflows/check-content.yml'
+  pull_request:
+    paths:
+      - 'content/**'
+      - 'scripts/**'
+      - 'README.md'
+
+jobs:
+  check-content:
+    name: 检查内容质量与目录同步
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 八段结构与 front-matter 检查
+        run: python scripts/check_content.py
+
+      - name: 检查目录是否同步
+        run: python scripts/gen_toc.py --check
+
+      - name: 检查内部链接是否可达
+        run: python scripts/check_links.py
+
+      - name: 检查 Mermaid 图语法
+        run: python scripts/check_mermaid.py
+
+      - name: 检查文件编码（防止出现乱码字符）
+        run: |
+          python - <<'PY'
+          import io, os, re, sys
+          pat = re.compile('[\ufffd\ufffe\uffff]|[\u0400-\u04FF]|[\u0600-\u06FF]')
+          bad = 0
+          for root, dirs, files in os.walk('.'):
+              if '.git' in root:
+                  continue
+              for f in files:
+                  if not f.endswith(('.md', '.html', '.py', '.yml')):
+                      continue
+                  p = os.path.join(root, f)
+                  try:
+                      s = io.open(p, encoding='utf-8').read()
+                  except UnicodeDecodeError as e:
+                      print('DECODE ERROR:', p, e); bad += 1; continue
+                  for i, line in enumerate(s.split('\n'), 1):
+                      if pat.search(line):
+                          print('BAD CHAR:', p, i, line.strip()[:60]); bad += 1
+          print('bad lines:', bad)
+          sys.exit(1 if bad else 0)
+          PY
+
+      - name: 检查工具是否真的不联网
+        run: |
+          echo "扫描 tools/ 下的外部请求调用…"
+          if grep -rInE "(fetch\(|XMLHttpRequest|https?://[a-z]" tools/ \
+             --include="*.html" \
+             --exclude-dir="" | grep -vE "github.com/YOUR_USERNAME|<!--|creativecommons|w3.org" ; then
+            echo "::warning::发现疑似外部请求或硬编码外链，请确认工具仍然可以离线运行。"
+          else
+            echo "未发现外部请求。工具保持离线可用。"
+          fi

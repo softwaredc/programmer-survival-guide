@@ -1,0 +1,16 @@
+# 统一换行符，避免跨平台协作时的 CRLF/LF 混用
+* text=auto eol=lf
+
+# 二进制文件不做任何转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+
+# GitHub 语言统计：把内容目录视为文档，不计入语言占比
+content/** linguist-documentation
+templates/** linguist-documentation
+cases/** linguist-documentation

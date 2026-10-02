@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>工具 · 程序员生存指南</title>
+<style>
+:root{--bg:#fff;--surface:#f7f8fa;--border:#e3e5e8;--text:#1c1e21;--muted:#6b7280;--accent:#2563eb;--accent-weak:#eff4ff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;padding:40px 16px 64px}
+.wrap{max-width:820px;margin:0 auto}
+h1{font-size:26px;font-weight:600;margin-bottom:6px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:8px}
+.badge{display:inline-block;background:var(--ok-weak,#e7f5ef);color:#1d9e75;font-size:12px;padding:4px 10px;border-radius:6px;margin-bottom:28px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+a.card{display:block;border:1px solid var(--border);border-radius:12px;padding:18px;text-decoration:none;color:inherit;background:#fff;transition:.15s}
+a.card:hover{border-color:var(--accent);background:var(--accent-weak)}
+.card .ico{font-size:22px;margin-bottom:8px}
+.card h2{font-size:16px;font-weight:600;margin-bottom:4px}
+.card p{font-size:13px;color:var(--muted);line-height:1.7}
+.card .tag{display:inline-block;margin-top:10px;font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:5px;padding:2px 7px}
+footer{margin-top:36px;padding-top:18px;border-top:1px solid var(--border);font-size:13px;color:var(--muted);line-height:1.9}
+footer a{color:var(--accent)}
+.note{background:var(--surface);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--muted);line-height:1.8;margin-top:16px}
+@media print{a.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>程序员生存指南 · 工具</h1>
+<p class="sub">从校招到被裁，程序员每个阶段该做什么，全部写成能照做的动作。</p>
+<span class="badge">🔒 全部工具纯前端运行，不联网、不上传、不记录</span>
+
+<div class="grid">
+  <a class="card" href="severance-calculator/index.html">
+    <div class="ico">🧮</div>
+    <h2>裁员赔偿计算器</h2>
+    <p>HR 报了一个数字，想知道它是怎么算出来的。支持 N / N+1 / 2N，含 3 倍封顶判断。</p>
+    <span class="tag">离职补偿</span>
+  </a>
+
+  <a class="card" href="real-hourly-wage/index.html">
+    <div class="ico">💰</div>
+    <h2>真实时薪 / Offer 对比器</h2>
+    <p>把通勤、加班、oncall、公积金都算进去。两个 offer 同时对比，看看哪个性价比更高。</p>
+    <span class="tag">求职谈薪</span>
+  </a>
+
+  <a class="card" href="exit-checklist/index.html">
+    <div class="ico">📋</div>
+    <h2>离职倒计时清单</h2>
+    <p>要走之前逐项确认。社保、期权、竞业、交接、背调——别等到走了才发现漏了什么。</p>
+    <span class="tag">离职流程</span>
+  </a>
+
+  <a class="card" href="risk-check/index.html">
+    <div class="ico">⚠️</div>
+    <h2>职业风险自测</h2>
+    <p>12 道题自测可替代性，看看自己现在处在什么位置，以及该读哪一章。</p>
+    <span class="tag">在职</span>
+  </a>
+
+  <a class="card" href="resume-check/index.html">
+    <div class="ico">📄</div>
+    <h2>简历体检</h2>
+    <p>粘贴简历文字，自动检查空泛形容词、缺少量化、多余的个人信息等常见问题。</p>
+    <span class="tag">求职</span>
+  </a>
+
+  <a class="card" href="https://github.com/softwaredc/programmer-survival-guide">
+    <div class="ico">📖</div>
+    <h2>全部 31 章内容</h2>
+    <p>卷一入场 · 卷二在场 · 卷三离场 · 通用层。每一章都写成能照做的动作。</p>
+    <span class="tag">GitHub 仓库</span>
+  </a>
+</div>
+
+<div class="note">
+  <b>关于隐私：</b>这些工具需要处理的是你的薪资、赔偿金额、简历——都是极度敏感的数据。
+  所以它们全部<b>纯前端运行，不发送任何网络请求</b>。你可以随时断开网络验证这一点。
+</div>
+
+<footer>
+  计算结果仅供参考，<b>不构成法律、投资或职业建议</b>。见
+  <a href="https://github.com/softwaredc/programmer-survival-guide/blob/main/DISCLAIMER.md">免责声明</a>。<br>
+  《程序员生存指南》 · 内容 CC BY-NC-SA 4.0 · 代码 MIT
+</footer>
+
+</div>
+</body>
+</html>

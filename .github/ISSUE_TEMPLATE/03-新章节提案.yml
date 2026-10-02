@@ -1,0 +1,72 @@
+name: 新章节提案
+description: 提议写一整章（需要先讨论，不要直接开写）
+title: "提案：<章节名>"
+labels: ["proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **请先在这里讨论，再动笔。**
+
+        我们用五维评分筛选章节，满分 25 分，**低于 16 分的不写**。
+        这不是刁难——它是防止这个仓库变成"什么都有一点、什么都不深"的唯一手段。
+
+        | 维度 | 含义 | 1 分 | 5 分 |
+        |---|---|---|---|
+        | **T 痛感** | 读到时有多扎心 | "要好好学习" | "被裁当天该做什么" |
+        | **U 紧迫** | 读者是否此刻就需要 | 三年后的规划 | 明天就要谈赔偿 |
+        | **A 可操作** | 读完能不能立刻做一件事 | 需要长期积累 | 明天上午就能去办 |
+        | **D 稀缺** | 别处能不能轻易搜到 | 面试题解析 | 竞业协议里的坑 |
+        | **S 传播** | 有没有一句话让人转发 | 泛泛而谈 | "你的 offer 换算成时薪……" |
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 这一章解决什么问题
+      description: 用一句话说清楚。说不清楚就说明还没想好。
+    validations:
+      required: true
+
+  - type: textarea
+    id: score
+    attributes:
+      label: 五维自评
+      description: 请逐项给分并说明理由
+      placeholder: |
+        T 痛感：5 —— 被裁当天的人此刻就需要
+        U 紧迫：5 —— 24 小时内必须做决定
+        A 可操作：5 —— 今天就能做完清单上的事
+        D 稀缺：4 —— 搜得到零散信息，但没有系统的清单
+        S 传播：5 —— "从会议室出来的第一个动作是什么都别签"
+        合计：24
+    validations:
+      required: true
+
+  - type: textarea
+    id: outline
+    attributes:
+      label: 拟写的八段结构
+      description: 每一段大致写什么。第 4 段（可直接抄的话术）必须能想出具体内容。
+      placeholder: |
+        1. 三十秒自检：……
+        2. 结论先行：……
+        3. 现在就做：今天 / 本周 / 本月
+        4. 可直接抄的话术：……
+        5. 五个常见错误：……
+        6. 真实案例（脱敏）：……
+        7. 延伸与依据：……
+        8. 免责：……
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 确认
+      options:
+        - label: 我已读过 content/_写作规范.md
+          required: true
+        - label: 我理解本章不会点名任何公司、不给个案法律意见、不做医疗诊断
+          required: true
+        - label: 我愿意在被接受后按八段结构完成初稿（status: draft）
+          required: true

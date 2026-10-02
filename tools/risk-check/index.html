@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>职业风险自测 · 程序员生存指南</title>
+<style>
+:root{
+  --bg:#fff;--surface:#f7f8fa;--border:#e3e5e8;--text:#1c1e21;--muted:#6b7280;
+  --accent:#2563eb;--accent-weak:#eff4ff;
+  --r:#c0392b;--o:#d97706;--y:#ca8a04;--g:#1d9e75;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;padding:24px 16px 64px}
+.wrap{max-width:720px;margin:0 auto}
+a.home{color:var(--muted);text-decoration:none;font-size:13px}
+a.home:hover{color:var(--accent)}
+h1{font-size:22px;font-weight:600;margin:12px 0 4px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
+.q{padding:14px 0;border-top:1px solid #eceef0}
+.q:first-of-type{border-top:none}
+.q .d{font-size:12px;color:var(--muted);letter-spacing:.5px;margin-bottom:8px}
+.q .t{font-size:14px;margin-bottom:10px}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opt{flex:1;min-width:80px;border:1px solid var(--border);background:#fff;border-radius:8px;padding:9px 6px;text-align:center;font-size:13px;cursor:pointer;transition:.15s;user-select:none}
+.opt:hover{border-color:var(--accent);color:var(--accent)}
+.opt.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.hintline{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.6}
+.res{background:#fff;border:1px solid var(--border);border-radius:12px;padding:22px;margin:16px 0}
+.lv{font-size:20px;font-weight:600;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.lv .bar{width:100%;height:10px;border-radius:99px;background:#eceef0;overflow:hidden;max-width:180px}
+.lv .bar i{display:block;height:100%;width:0;transition:width .3s}
+.score{font-size:13px;color:var(--muted);margin-bottom:14px}
+.adv{font-size:14px;line-height:1.9}
+.adv b{color:var(--text)}
+.dims{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+@media(max-width:480px){.dims{grid-template-columns:1fr}}
+.dim{background:var(--surface);border-radius:8px;padding:10px 12px;font-size:13px;display:flex;justify-content:space-between;gap:8px}
+.dim span:last-child{font-weight:600;font-variant-numeric:tabular-nums}
+.notice{background:#fdf0ee;border:1px solid #f3d5cf;border-radius:10px;padding:14px 16px;font-size:13px;color:#7d2b20;line-height:1.75}
+ul{margin:8px 0 0 18px}
+li{margin:4px 0}
+.priv{text-align:center;color:var(--muted);font-size:12px;margin-top:22px;line-height:1.8}
+footer{margin-top:28px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.8}
+a{color:var(--accent)}
+@media print{.opts{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a class="home" href="../index.html">← 返回工具列表</a>
+<h1>职业风险自测</h1>
+<p class="sub">12 道题，看看你离"被优化"有多远，以及现在该读哪一章。<b>不联网，不留记录。</b></p>
+
+<div id="qs"></div>
+
+<div class="res" id="res" style="display:none">
+  <div class="lv"><span id="lv-text"></span><span class="bar"><i id="lv-bar"></i></span></div>
+  <div class="score" id="score"></div>
+  <div class="dims" id="dims"></div>
+  <div class="adv" id="adv"></div>
+</div>
+
+<div class="res" id="intro">
+  <div class="adv">
+    <b>在开始之前，先说清楚这个工具不是什么。</b>
+    <ul>
+      <li>它<b>不是</b>心理测量工具，没有任何科学效度。</li>
+      <li>它<b>不预测</b>你会不会被裁，也不可能预测。</li>
+      <li>它的作用只有一个：<b>让你提前想到一些平时不会想的问题。</b></li>
+    </ul>
+    <div style="margin-top:14px">
+      核心观点：可替代性不是由你的能力决定的，<b>而是由你的工作被记录和被理解的程度决定的。</b>
+      详见 <a href="../../content/vol2/02-可替代性自测.md">可替代性自测</a>。
+    </div>
+  </div>
+</div>
+
+<div class="notice">
+  <b>请理性看待结果：</b>本题为经验性框架，得分低不代表你真的有风险，得分高也不代表安全。
+  分数的作用是提示方向，不是下结论。
+</div>
+
+<p class="priv">🔒 纯前端运行，不联网，答案不会被记录或上传。</p>
+
+<footer>
+  《程序员生存指南》 · 相关章节：<a href="../../content/vol2/02-可替代性自测.md" style="color:var(--muted)">可替代性自测</a> ·
+  <a href="../../content/vol2/07-被优化的早期信号.md" style="color:var(--muted)">被优化的早期信号</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var DIMS=[
+    {k:'transfer',name:'可交接性'},
+    {k:'unique',name:'角色独特性'},
+    {k:'visible',name:'产出可见性'},
+    {k:'network',name:'网络连接'},
+  ];
+  var Q=[
+    {d:'可交接性',k:'transfer',t:'你负责的系统，有没有别人能看懂的最新文档？',o:['完全没有','有一部分','有且较新']},
+    {d:'可交接性',k:'transfer',t:'如果明天你离开两周，同级同事能接手你的活吗？',o:['完全不能','勉强可以','基本没问题']},
+    {d:'可交接性',k:'transfer',t:'过去半年，你有没有做过知识传递（分享/带人/Code Review）？',o:['没有','偶尔','定期做']},
+    {d:'角色独特性',k:'unique',t:'你现在做的事，团队里有别人在做类似的事吗？',o:['有，好几个','有，一个','基本只有我']},
+    {d:'角色独特性',k:'unique',t:'你参与决定"做什么"和"为什么做"吗？',o:['完全不参与','有时被咨询','经常参与']},
+    {d:'角色独特性',k:'unique',t:'过去一年，你做过当时不会、需要学才能做的事吗？',o:['完全没有','有一两件','有三件以上']},
+    {d:'产出可见性',k:'visible',t:'你能用数字说清自己今年的三个产出吗？',o:['说不出来','勉强能说','很清楚']},
+    {d:'产出可见性',k:'visible',t:'你的产出，团队以外的人知道吗？',o:['没人知道','小范围知道','多个团队知道']},
+    {d:'产出可见性',k:'visible',t:'你有多久没更新过简历了？',o:['两年以上','一年内','三个月内']},
+    {d:'网络连接',k:'network',t:'团队之外，有几个可以随时联系的人？',o:['几乎没有','两三个','五个以上']},
+    {d:'网络连接',k:'network',t:'如果现在要找工作，你有人可以求助吗？',o:['没有','有一两个','有好几个']},
+    {d:'网络连接',k:'network',t:'有人会在你不在场时替你说好话吗？',o:['不确定','应该有','肯定有']},
+  ];
+
+  var KEY='psg_risk_v1';
+  var ans=JSON.parse(localStorage.getItem(KEY)||'{}');
+
+  var box=document.getElementById('qs');
+  DIMS.forEach(function(dim){
+    var card=document.createElement('div');
+    card.className='card';
+    var html='';
+    Q.forEach(function(q,i){
+      if(q.k!==dim.k) return;
+      html+='<div class="q"><div class="d">'+q.d+'</div><div class="t">'+(i+1)+'. '+q.t+'</div><div class="opts" data-i="'+i+'">'+
+        q.o.map(function(o,oi){
+          return '<div class="opt'+(ans[i]===oi?' on':'')+'" data-oi="'+oi+'">'+o+'</div>';
+        }).join('')+'</div></div>';
+    });
+    card.innerHTML=html;
+    box.appendChild(card);
+  });
+
+  var res=document.getElementById('res'), intro=document.getElementById('intro');
+
+  function judge(){
+    var total=0, max=Q.length*2;
+    var dimScore={};
+    Q.forEach(function(q,i){
+      if(ans[i]===undefined) return;
+      total+=ans[i];
+      dimScore[q.k]=(dimScore[q.k]||0)+ans[i];
+    });
+    var answered=Object.keys(ans).length;
+    if(answered===0){ res.style.display='none'; intro.style.display='block'; return; }
+    intro.style.display='none'; res.style.display='block';
+
+    var levels=[
+      {max:999,s:'',t:'',c:'',adv:''}
+    ];
+    var lv,color,adv;
+    var pct=total/max*100;
+    if(pct>=70){ lv='🟢 相对安全'; color='var(--g)';
+      adv='你的基础比较扎实。<b>下一步建议</b>：把注意力放在持续增长上——<a href="../../content/vol2/08-专家还是管理.md">专家还是管理</a>，或者读一读<a href="../../content/vol2/10-副业与planB.md">副业与 Plan B</a>。'; }
+    else if(pct>=45){ lv='🟡 中等'; color='var(--y)';
+      adv='大多数人在这个位置。安全但不抗风险。<b>建议优先做两件事</b>：把你的成果量化记录下来（见<a href="../../content/vol2/03-绩效与晋升.md">绩效与晋升</a>），以及扩大你的影响力半径（见<a href="../../content/vol2/02-可替代性自测.md">可替代性自测</a>）。'; }
+    else if(pct>=25){ lv='🟠 偏弱'; color='var(--o)';
+      adv='你需要尽快补短板。<b>本周先做一件</b>：把负责的系统写一份别人能看懂的文档——这是把"垄断"变成"影响力"的第一步，也是成本最低的一步。详见<a href="../../content/vol2/02-可替代性自测.md">可替代性自测</a>。'; }
+    else { lv='🔴 需要重视'; color='var(--r)';
+      adv='建议你认真读一读<a href="../../content/vol2/02-可替代性自测.md">可替代性自测</a>和<a href="../../content/vol2/07-被优化的早期信号.md">被优化的早期信号</a>。<b>先从最容易的一项开始</b>：维护成果流水、更新简历。<b>不需要恐慌，只需要开始。</b>'; }
+
+    document.getElementById('lv-text').textContent=lv;
+    document.getElementById('lv-text').style.color=color;
+    var bar=document.getElementById('lv-bar');
+    bar.style.background=color;
+    bar.style.width=Math.max(pct,3)+'%';
+    document.getElementById('score').textContent=
+      '已回答 '+answered+' / '+Q.length+' 题，得分 '+total+' / '+max;
+    document.getElementById('dims').innerHTML=DIMS.map(function(d){
+      var v=dimScore[d.k]||0;
+      return '<div class="dim"><span>'+d.name+'</span><span>'+v+' / 6</span></div>';
+    }).join('');
+    document.getElementById('adv').innerHTML=adv;
+  }
+
+  document.addEventListener('click',function(e){
+    var opt=e.target.closest('.opt');
+    if(!opt) return;
+    var wrapEl=opt.closest('.opts');
+    var i=wrapEl.getAttribute('data-i');
+    var oi=+opt.getAttribute('data-oi');
+    ans[i]=oi;
+    wrapEl.querySelectorAll('.opt').forEach(function(el){el.classList.remove('on')});
+    opt.classList.add('on');
+    localStorage.setItem(KEY,JSON.stringify(ans));
+    judge();
+  });
+
+  judge();
+})();
+</script>
+</body>
+</html>

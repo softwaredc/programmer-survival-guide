@@ -1,0 +1,95 @@
+name: 补充一条话术
+description: 给任意章节的第 4 段补一句你真用过的话术（门槛最低的贡献方式）
+title: "补充话术：<章节名>"
+labels: ["needs-phrasing", "good first issue"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 这是本仓库门槛最低的贡献
+
+        不需要写文章，不需要懂法律。只需要一句**你真的说过、并且确认有用**的话。
+
+        为什么这件事有价值：
+        - 翻译产出的是别人的话，话术贡献的是自己的经验
+        - 一句真正管用的话，比十句通用建议有用
+        - 三行字就够了
+
+  - type: dropdown
+    id: chapter
+    attributes:
+      label: 要补充到哪一章
+      description: 不确定就选「其他」，我们在合并时放到合适的位置
+      options:
+        - 卷一 · 选方向
+        - 卷一 · 实习
+        - 卷一 · 校招时间线
+        - 卷一 · 简历
+        - 卷一 · 面试
+        - 卷一 · Offer 选择
+        - 卷一 · 三方协议
+        - 卷一 · 试用期
+        - 卷二 · 头三年
+        - 卷二 · 可替代性自测
+        - 卷二 · 绩效与晋升
+        - 卷二 · 谈薪话术
+        - 卷二 · 跳槽时机
+        - 卷二 · 站队与政治
+        - 卷二 · 被优化的早期信号
+        - 卷二 · 专家还是管理
+        - 卷二 · Burnout
+        - 卷二 · 副业与 Plan B
+        - 卷三 · 被通知当天
+        - 卷三 · 赔偿金怎么算
+        - 卷三 · 谈判
+        - 卷三 · 别签的东西
+        - 卷三 · 社保公积金
+        - 卷三 · 竞业协议
+        - 卷三 · 期权与未行权
+        - 卷三 · 离职交接与背调
+        - 卷三 · 仲裁与维权
+        - 卷三 · 现金流管理
+        - 卷三 · 重启求职
+        - 卷三 · 降薪与转行
+        - 卷三 · 心理
+        - 其他 / 不确定
+    validations:
+      required: true
+
+  - type: textarea
+    id: phrase
+    attributes:
+      label: 你说过的原话
+      description: 尽量保持口语，不要润色成书面语。口语才是有用的。
+      placeholder: |
+        「我理解公司的安排。关于补偿，我想先核对一下计算口径……」
+    validations:
+      required: true
+
+  - type: textarea
+    id: scenario
+    attributes:
+      label: 适用场景
+      description: 什么时候说、对谁说
+      placeholder: 被 HR 报出一个数字之后，第一次核对口径时用
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: 为什么它管用
+      description: 它解决了对方的什么顾虑，或者避开了什么陷阱
+      placeholder: 把争议锁定在"口径"上之后，对方就无法用"公司规定"来搪塞。
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 确认
+      options:
+        - label: 这句话是我真的说过或用过的，不是我觉得"应该可以这样说"
+          required: true
+        - label: 我同意本仓库的 CC BY-NC-SA 4.0 许可
+          required: true

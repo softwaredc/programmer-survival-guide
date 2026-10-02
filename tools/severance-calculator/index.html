@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>裁员赔偿计算器 · 程序员生存指南</title>
+<style>
+:root{
+  --bg:#ffffff;--surface:#f7f8fa;--border:#e3e5e8;--text:#1c1e21;--muted:#6b7280;
+  --accent:#2563eb;--accent-weak:#eff4ff;--danger:#c0392b;--danger-weak:#fdf0ee;
+  --ok:#1d9e75;--warn:#b45309;--warn-weak:#fdf6e7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;padding:24px 16px 64px}
+.wrap{max-width:760px;margin:0 auto}
+a.home{color:var(--muted);text-decoration:none;font-size:13px}
+a.home:hover{color:var(--accent)}
+h1{font-size:22px;font-weight:600;margin:12px 0 4px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+h2{font-size:15px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+h2 .n{background:var(--accent);color:#fff;width:20px;height:20px;border-radius:6px;font-size:12px;display:inline-flex;align-items:center;justify-content:center;font-weight:500}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+input,select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:15px;background:#fff;color:var(--text);font-family:inherit}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-weak)}
+.hint{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.5}
+.full{grid-column:1/-1}
+.res{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.total{font-size:32px;font-weight:600;letter-spacing:-.5px;margin:4px 0 2px}
+.total small{font-size:15px;font-weight:400;color:var(--muted)}
+.rowline{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border);font-size:14px;gap:12px}
+.rowline:first-of-type{border-top:none}
+.rowline .k{color:var(--muted)}
+.rowline .v{font-variant-numeric:tabular-nums;font-weight:500;text-align:right}
+.rowline.dim .v{color:var(--muted);font-weight:400}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:2px}
+.tag.warn{background:var(--warn-weak);color:var(--warn)}
+.tag.ok{background:#e7f5ef;color:var(--ok)}
+.calc{font-size:13px;color:var(--muted);background:var(--surface);border-radius:8px;padding:12px 14px;margin-top:12px;line-height:1.8;font-variant-numeric:tabular-nums;overflow-x:auto;white-space:pre-wrap;word-break:break-all}
+.notice{background:var(--danger-weak);border:1px solid #f3d5cf;border-radius:10px;padding:14px 16px;font-size:13px;color:#7d2b20;line-height:1.7}
+.notice b{color:var(--danger)}
+.box{background:var(--accent-weak);border-radius:10px;padding:14px 16px;font-size:13px;color:#1e40af;line-height:1.7;margin-top:12px}
+ul{margin:6px 0 0 18px}
+li{margin:3px 0}
+.priv{text-align:center;color:var(--muted);font-size:12px;margin-top:24px;line-height:1.8}
+footer{margin-top:32px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.8}
+@media print{body{padding:0}.card,.res{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a class="home" href="../index.html">← 返回工具列表</a>
+<h1>裁员赔偿计算器</h1>
+<p class="sub">按《劳动合同法》通用口径估算你的经济补偿、代通知金与赔偿金。<b>全程在浏览器里计算，数据不会离开你的电脑。</b></p>
+
+<div class="card">
+  <h2><span class="n">1</span>基本信息</h2>
+  <div class="grid">
+    <div>
+      <label for="start">入职日期</label>
+      <input type="date" id="start">
+    </div>
+    <div>
+      <label for="end">拟解除日期（最后工作日）</label>
+      <input type="date" id="end">
+    </div>
+    <div class="full">
+      <label for="type">解除类型</label>
+      <select id="type">
+        <option value="consult">协商一致解除（公司提出）</option>
+        <option value="nolaw">无过失性辞退（第 40 条情形）</option>
+        <option value="layoff">经济性裁员（第 41 条情形）</option>
+        <option value="illegal">我认为属于违法解除</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2><span class="n">2</span>工资口径</h2>
+  <div class="grid">
+    <div>
+      <label for="avg">解除前 12 个月平均工资（元/月）</label>
+      <input type="number" id="avg" min="0" step="100" placeholder="含奖金、津贴、加班费">
+      <div class="hint">不是你的 base。是应得工资的月平均，<b>包含奖金、津贴、加班费</b>。</div>
+    </div>
+    <div>
+      <label for="last">上一个月的工资（元）</label>
+      <input type="number" id="last" min="0" step="100" placeholder="用于代通知金">
+      <div class="hint">代通知金按上一个月的工资标准确定。如不清楚，可先填与左侧相同。</div>
+    </div>
+    <div>
+      <label for="social">当地上年度职工月平均工资（元）</label>
+      <input type="number" id="social" min="0" step="100" placeholder="选填，用于判断封顶">
+      <div class="hint">填了才会判断是否触发 3 倍封顶。<a href="#" onclick="return false" title="请在当地人社局官网查询">在哪查？</a> 人社局官网会公布。</div>
+    </div>
+    <div>
+      <label for="notice">公司是否提前 30 天书面通知</label>
+      <select id="notice">
+        <option value="no">没有提前通知</option>
+        <option value="yes">已提前 30 天通知</option>
+      </select>
+      <div class="hint">提前通知了，通常就不再额外支付代通知金。</div>
+    </div>
+  </div>
+</div>
+
+<div class="res" id="result">
+  <h2>估算结果</h2>
+  <div style="color:var(--muted);font-size:13px" id="empty">填写上面的信息后，结果会自动出现。</div>
+  <div id="out" style="display:none">
+    <div class="rowline"><span class="k">工作年限</span><span class="v" id="v-work"></span></div>
+    <div class="rowline"><span class="k">经济补偿（N）</span><span class="v" id="v-n"></span></div>
+    <div class="rowline" id="r-plus"><span class="k">代通知金（+1）</span><span class="v" id="v-plus"></span></div>
+    <div class="rowline" id="r-illegal"><span class="k">违法解除赔偿金（2N）</span><span class="v" id="v-illegal"></span></div>
+    <div style="border-top:2px solid var(--border);margin:8px 0"></div>
+    <div style="color:var(--muted);font-size:13px">合计（按你选择的情形）</div>
+    <div class="total" id="v-total"></div>
+    <div id="v-note" style="font-size:13px;color:var(--warn);margin-bottom:4px"></div>
+    <div class="calc" id="v-calc"></div>
+  </div>
+</div>
+
+<div class="notice">
+  <b>本工具只是估算，不构成法律意见。</b>
+  <ul>
+    <li>计算结果基于通用口径，<b>没有覆盖</b>地方细则、特殊工时、劳务派遣、跨境用工等特殊情形。</li>
+    <li>各地在具体口径上可能存在差异，请以当地劳动仲裁与司法实践为准。</li>
+    <li>如果对金额有争议，可咨询当地劳动人事争议仲裁委员会、法律援助中心或专业律师。</li>
+    <li>如需更具针对性的判断，请携带书面材料咨询专业人士。</li>
+  </ul>
+</div>
+
+<div class="box">
+  <b>下一步该做什么？</b>
+  <ul>
+    <li>把这里的计算结果和你被告知的数字对比，找出<b>口径差异</b>（是工龄认定不同，还是月平均工资的构成不同）。</li>
+    <li>谈判时不要争论，只问："我们哪一部分的口径不一致？"</li>
+    <li>详见《程序员生存指南》<a href="../../content/vol3/02-赔偿金怎么算.md" style="color:#1e40af">赔偿金怎么算</a> 与 <a href="../../content/vol3/03-谈判.md" style="color:#1e40af">谈判</a> 两章。</li>
+  </ul>
+</div>
+
+<p class="priv">🔒 本工具纯前端运行，不发送任何网络请求，不记录你的输入。<br>你可以断开网络后再试，功能完全一致。</p>
+
+<footer>
+  《程序员生存指南》 · <a href="https://github.com/softwaredc/programmer-survival-guide" style="color:var(--muted)">GitHub</a><br>
+  法律相关内容以中国大陆现行法律法规为准，更新于 2026-10。
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var yuan=function(n){return '¥'+n.toLocaleString('zh-CN',{maximumFractionDigits:2});};
+
+  function monthsTotal(s,e){
+    if(!s||!e) return 0;
+    var sy=+s.slice(0,4), sm=+s.slice(5,7), sd=+s.slice(8,10);
+    var ey=+e.slice(0,4), em=+e.slice(5,7), ed=+e.slice(8,10);
+    var total=(ey-sy)*12+(em-sm);
+    if(ed<sd) total-=1;
+    return total<0?0:total;
+  }
+
+  // 经济补偿月数：满一年一个月；六个月以上不满一年按一年；不满六个月半个月
+  function ecMonths(total){
+    var y=Math.floor(total/12), rem=total%12, extra=0;
+    if(rem>=6) extra=1; else if(rem>0) extra=0.5;
+    return y+extra;
+  }
+
+  function calc(){
+    var s=document.getElementById('start').value;
+    var e=document.getElementById('end').value;
+    var avg=parseFloat(document.getElementById('avg').value)||0;
+    var last=parseFloat(document.getElementById('last').value)||0;
+    var social=parseFloat(document.getElementById('social').value)||0;
+    var type=document.getElementById('type').value;
+    var notified=document.getElementById('notice').value==='yes';
+
+    if(!s||!e||avg<=0){
+      document.getElementById('empty').style.display='block';
+      document.getElementById('out').style.display='none';
+      return;
+    }
+    document.getElementById('empty').style.display='none';
+    document.getElementById('out').style.display='block';
+
+    var total=monthsTotal(s,e);
+    var y=Math.floor(total/12);
+    var rem=total%12;
+    var m=ecMonths(total);
+
+    // 封顶判断
+    var capped=false, base=avg, mEff=m;
+    if(social>0 && avg>social*3){
+      capped=true; base=social*3;
+      if(mEff>12) mEff=12;
+    }
+
+    var N=base*mEff;
+    var plus=(!notified && type!=='illegal')?last:0;
+    var illegal=type==='illegal'?N*2:null;
+    var totalPay=type==='illegal'?illegal:(N+plus);
+
+    document.getElementById('v-work').textContent=
+      y+' 年 '+(rem>0?rem+' 个月':'0 个月')+'（约 '+total+' 个月）';
+
+    document.getElementById('v-n').innerHTML=
+      yuan(N)+'<span class="tag '+(capped?'warn':'ok')+'" style="background:'+
+      (capped?'var(--warn-weak)':'#e7f5ef')+';color:'+(capped?'var(--warn)':'var(--ok)')+'">'+
+      (capped?'已封顶':'未封顶')+'</span>';
+
+    document.getElementById('r-plus').style.display=(type==='illegal')?'none':'flex';
+    document.getElementById('v-plus').textContent=plus>0?yuan(plus):'不适用（已提前 30 天通知）';
+
+    document.getElementById('r-illegal').style.display=(type==='illegal')?'flex':'none';
+    if(illegal!==null) document.getElementById('v-illegal').textContent=yuan(illegal);
+
+    document.getElementById('v-total').innerHTML=yuan(totalPay)+
+      '<small> / '+(type==='illegal'?'违法解除情形（2N）':'经济补偿'+(plus>0?' + 代通知金':''))+'</small>';
+
+    var note='';
+    if(capped) note='⚠ 你的月平均工资超过当地社平工资 3 倍，已按 3 倍计算，且支付年限不超过 12 年。';
+    if(type==='illegal') note='⚠ 2N 的前提是解除被认定为违法，需要相应证据支持。是否成立请咨询专业人士。';
+    document.getElementById('v-note').textContent=note;
+
+    var capLine='';
+    if(social>0 && avg>social*3){
+      capLine='封顶前：月工资 '+yuan(avg)+' ＞ 社平工资 3 倍 '+yuan(social*3)+'\n'+
+              '按 '+yuan(social*3)+' 计算；年限 '+(m>12?m+' → 12（封顶）':m+'（未超过 12）')+'\n\n';
+    }
+    document.getElementById('v-calc').textContent=
+      '计算过程\n'+
+      '────────────────\n'+
+      '工龄：'+y+' 年 '+rem+' 个月\n'+
+      '折算月数：'+(rem>=6 && rem>0?'六个月以上不满一年 → 按一年计':(rem>0?'不满六个月 → 按半个月计':'整年'))+' = '+m+' 个月\n'+
+      capLine+
+      '经济补偿 N = '+yuan(base)+' × '+mEff+' = '+yuan(N)+'\n'+
+      (type!=='illegal'?('代通知金 = '+(plus>0?yuan(plus):'0（已提前 30 天通知）')+'\n'):'')+
+      (type==='illegal'?('违法解除赔偿金 2N = '+yuan(N)+' × 2 = '+yuan(illegal)+'\n'):'')+
+      '合计 = '+yuan(totalPay);
+  }
+
+  ['start','end','avg','last','social','type','notice'].forEach(function(id){
+    var el=document.getElementById(id);
+    el.addEventListener('input',calc);
+    el.addEventListener('change',calc);
+  });
+
+  // 默认填今天
+  var t=new Date();
+  var iso=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
+  document.getElementById('end').value=iso;
+})();
+</script>
+</body>
+</html>

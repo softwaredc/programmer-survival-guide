@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>真实时薪 / Offer 对比器 · 程序员生存指南</title>
+<style>
+:root{
+  --bg:#ffffff;--surface:#f7f8fa;--border:#e3e5e8;--text:#1c1e21;--muted:#6b7280;
+  --a:#2563eb;--a-weak:#eff4ff;--b:#c2410c;--b-weak:#fff2e8;
+  --ok:#1d9e75;--warn:#b45309;--warn-weak:#fdf6e7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;padding:24px 16px 64px}
+.wrap{max-width:1000px;margin:0 auto}
+a.home{color:var(--muted);text-decoration:none;font-size:13px}
+a.home:hover{color:var(--a)}
+h1{font-size:22px;font-weight:600;margin:12px 0 4px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:20px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.cols{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px}
+.card.offerA{border-top:3px solid var(--a)}
+.card.offerB{border-top:3px solid var(--b)}
+h2{font-size:15px;font-weight:600;margin-bottom:4px}
+h2 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px}
+.card.offerA h2 .dot{background:var(--a)}
+.card.offerB h2 .dot{background:var(--b)}
+h3{font-size:12px;font-weight:500;color:var(--muted);margin:16px 0 10px;text-transform:none;letter-spacing:.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:420px){.grid2{grid-template-columns:1fr}}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+input{width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:8px;font-size:15px;background:#fff;color:var(--text);font-family:inherit}
+input:focus{outline:none;border-color:var(--a);box-shadow:0 0 0 3px var(--a-weak)}
+.hint{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5}
+.res{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:9px 8px;text-align:right;border-top:1px solid var(--border)}
+th:first-child,td:first-child{text-align:left;color:var(--muted);font-weight:400}
+thead th{border-top:none;font-weight:500;font-size:13px;color:var(--muted)}
+td.v{font-variant-numeric:tabular-nums;font-weight:500}
+tr.hl td{background:var(--a-weak);font-weight:600}
+tr.hl td:first-child{color:var(--text)}
+@media(max-width:560px){table{font-size:13px}th,td{padding:8px 4px}}
+.verdict{background:var(--warn-weak);border-radius:10px;padding:14px 16px;font-size:14px;color:#78350f;line-height:1.7;margin-top:12px}
+.notice{background:#fdf0ee;border:1px solid #f3d5cf;border-radius:10px;padding:14px 16px;font-size:13px;color:#7d2b20;line-height:1.7;margin-top:12px}
+ul{margin:6px 0 0 18px}
+li{margin:3px 0}
+.priv{text-align:center;color:var(--muted);font-size:12px;margin-top:24px;line-height:1.8}
+footer{margin-top:32px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.8}
+@media print{body{padding:0}.card,.res{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a class="home" href="../index.html">← 返回工具列表</a>
+<h1>真实时薪 / Offer 对比器</h1>
+<p class="sub">把通勤、加班、oncall、公积金全部算进去，看看你的时薪到底是多少。<b>数据不会离开你的浏览器。</b></p>
+
+<div class="cols">
+  <div class="card offerA">
+    <h2><span class="dot"></span>Offer A</h2>
+    <div class="hint" style="margin:0 0 12px">也可以只填一个，用来算自己的真实时薪</div>
+
+    <h3>收入（税前）</h3>
+    <div class="grid2">
+      <div><label>月 base（元）</label><input type="number" id="a-base" min="0" step="500" placeholder="20000"></div>
+      <div><label>一年发几个月</label><input type="number" id="a-months" min="12" max="24" step="1" value="12"></div>
+      <div><label>公积金合计比例（%）</label><input type="number" id="a-gjj" min="0" max="40" step="1" value="24"><div class="hint">个人 + 公司，常见 12+12=24</div></div>
+      <div><label>补贴（元/月）</label><input type="number" id="a-sub" min="0" step="100" value="0"><div class="hint">餐补/交通/住房合计</div></div>
+      <div><label>签字费（元，一次性）</label><input type="number" id="a-sign" min="0" step="1000" value="0"></div>
+      <div><label>期权年化（元，建议填 0）</label><input type="number" id="a-opt" min="0" step="1000" value="0"><div class="hint">非上市公司建议按 0 计</div></div>
+    </div>
+
+    <h3>时间投入</h3>
+    <div class="grid2">
+      <div><label>每天在岗（小时）</label><input type="number" id="a-daily" min="1" max="24" step="0.5" value="9"></div>
+      <div><label>每周上班（天）</label><input type="number" id="a-days" min="1" max="7" step="1" value="5"></div>
+      <div><label>单程通勤（分钟）</label><input type="number" id="a-commute" min="0" step="5" value="30"></div>
+      <div><label>每周在家加班/oncall（小时）</label><input type="number" id="a-extra" min="0" step="1" value="0"></div>
+      <div><label>年假（天）</label><input type="number" id="a-leave" min="0" max="30" step="1" value="10"></div>
+    </div>
+  </div>
+
+  <div class="card offerB">
+    <h2><span class="dot"></span>Offer B</h2>
+    <div class="hint" style="margin:0 0 12px">留空则只计算 A</div>
+
+    <h3>收入（税前）</h3>
+    <div class="grid2">
+      <div><label>月 base（元）</label><input type="number" id="b-base" min="0" step="500" placeholder="17000"></div>
+      <div><label>一年发几个月</label><input type="number" id="b-months" min="12" max="24" step="1" value="12"></div>
+      <div><label>公积金合计比例（%）</label><input type="number" id="b-gjj" min="0" max="40" step="1" value="24"></div>
+      <div><label>补贴（元/月）</label><input type="number" id="b-sub" min="0" step="100" value="0"></div>
+      <div><label>签字费（元，一次性）</label><input type="number" id="b-sign" min="0" step="1000" value="0"></div>
+      <div><label>期权年化（元，建议填 0）</label><input type="number" id="b-opt" min="0" step="1000" value="0"></div>
+    </div>
+
+    <h3>时间投入</h3>
+    <div class="grid2">
+      <div><label>每天在岗（小时）</label><input type="number" id="b-daily" min="1" max="24" step="0.5" value="8"></div>
+      <div><label>每周上班（天）</label><input type="number" id="b-days" min="1" max="7" step="1" value="5"></div>
+      <div><label>单程通勤（分钟）</label><input type="number" id="b-commute" min="0" step="5" value="15"></div>
+      <div><label>每周在家加班/oncall（小时）</label><input type="number" id="b-extra" min="0" step="1" value="0"></div>
+      <div><label>年假（天）</label><input type="number" id="b-leave" min="0" max="30" step="1" value="10"></div>
+    </div>
+  </div>
+</div>
+
+<div class="res">
+  <table>
+    <thead><tr><th></th><th>Offer A</th><th>Offer B</th></tr></thead>
+    <tbody>
+      <tr><td>月 base</td><td class="v" id="r-baseA">—</td><td class="v" id="r-baseB">—</td></tr>
+      <tr><td>年现金收入（税前）</td><td class="v" id="r-yearA">—</td><td class="v" id="r-yearB">—</td></tr>
+      <tr><td>其中公积金（公司+个人）</td><td class="v" id="r-gjjA">—</td><td class="v" id="r-gjjB">—</td></tr>
+      <tr><td>每周投入（小时）</td><td class="v" id="r-weekA">—</td><td class="v" id="r-weekB">—</td></tr>
+      <tr><td>全年投入（小时）</td><td class="v" id="r-totA">—</td><td class="v" id="r-totB">—</td></tr>
+      <tr class="hl"><td><b>真实时薪</b></td><td class="v" id="r-hrA">—</td><td class="v" id="r-hrB">—</td></tr>
+      <tr><td>名义月薪时薪（不含通勤加班）</td><td class="v" id="r-simA">—</td><td class="v" id="r-simB">—</td></tr>
+    </tbody>
+  </table>
+  <div class="verdict" id="verdict">填写月 base 后会自动计算。请先填写月 base。</div>
+</div>
+
+<div class="notice">
+  说明：
+  <ul>
+    <li>结果为<b>税前</b>估算，未扣除个人所得税与社保个人部分，实际到手会更低。</li>
+    <li>公积金按 base × 比例估算，实际缴纳基数可能有上限，请以当地政策与公司实际为准。</li>
+    <li>本工具<b>不构成任何投资或税务建议</b>，也不保证计算结果准确。</li>
+    <li>期权不确定性极高，建议决策时按 0 计算。</li>
+  </ul>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <b>为什么要用真实时薪来比较？</b>
+  <ul style="margin-top:8px">
+    <li>一个月薪高 30%、但工时高 60%、通勤多 1 小时的 offer，真实时薪反而更低。</li>
+    <li>公积金是实打实的收入，公司缴的那一份也是你的钱，很多人比 offer 时会漏掉。</li>
+    <li>通勤是每天都发生的时间损耗，一年下来可能相当于几十个工作日。</li>
+    <li>详见 <a href="../../content/vol1/06-offer选择.md">Offer 选择：把 offer 换算成时薪再比</a>。</li>
+  </ul>
+</div>
+
+<p class="priv">🔒 本工具纯前端运行，不发送任何网络请求，不记录你的输入。<br>你的薪资数据，连你自己刷新页面后都不会留下。</p>
+
+<footer>
+  《程序员生存指南》 · <a href="https://github.com/softwaredc/programmer-survival-guide" style="color:var(--muted)">GitHub</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var ids=['base','months','gjj','sub','sign','opt','daily','days','commute','extra','leave'];
+  function val(side,key){
+    var el=document.getElementById(side+'-'+key);
+    var v=parseFloat(el.value);
+    return isNaN(v)?0:v;
+  }
+  function money(n){return '¥'+Math.round(n).toLocaleString('zh-CN');}
+  function num(n,d){return n.toLocaleString('zh-CN',{maximumFractionDigits:d===undefined?1:d});}
+
+  function calcSide(side){
+    var base=val(side,'base');
+    if(base<=0) return null;
+    var months=val(side,'months')||12;
+    var gjj=val(side,'gjj');
+    var sub=val(side,'sub');
+    var sign=val(side,'sign');
+    var opt=val(side,'opt');
+    var daily=val(side,'daily')||8;
+    var days=val(side,'days')||5;
+    var commute=val(side,'commute');
+    var extra=val(side,'extra');
+    var leave=val(side,'leave');
+
+    var gjjYear=base*(gjj/100)*12;
+    var year=base*months+sub*12+gjjYear+sign+opt;
+
+    var weekHours=daily*days + (commute*2/60)*days + extra;
+    var workWeeks=52-(leave/ (days||5));
+    var totalHours=weekHours*workWeeks;
+
+    var simpleHours=daily*days;
+    var simpleRate=(base*months)/(simpleHours*workWeeks);
+
+    return {base:base,year:year,gjjYear:gjjYear,weekHours:weekHours,
+            totalHours:totalHours,rate:totalHours>0?year/totalHours:0,simpleRate:simpleRate};
+  }
+
+  function render(){
+    var a=calcSide('a'), b=calcSide('b');
+    function set(id,v){document.getElementById(id).textContent=v;}
+    if(a){
+      set('r-baseA',money(a.base));
+      set('r-yearA',money(a.year));
+      set('r-gjjA',money(a.gjjYear));
+      set('r-weekA',num(a.weekHours)+' h');
+      set('r-totA',num(a.totalHours,0)+' h');
+      set('r-hrA',money(a.rate)+' /h');
+      set('r-simA',money(a.simpleRate)+' /h');
+    } else {
+      ['r-baseA','r-yearA','r-gjjA','r-weekA','r-totA','r-hrA','r-simA'].forEach(function(i){set(i,'—');});
+    }
+    if(b){
+      set('r-baseB',money(b.base));
+      set('r-yearB',money(b.year));
+      set('r-gjjB',money(b.gjjYear));
+      set('r-weekB',num(b.weekHours)+' h');
+      set('r-totB',num(b.totalHours,0)+' h');
+      set('r-hrB',money(b.rate)+' /h');
+      set('r-simB',money(b.simpleRate)+' /h');
+    } else {
+      ['r-baseB','r-yearB','r-gjjB','r-weekB','r-totB','r-hrB','r-simB'].forEach(function(i){set(i,'—');});
+    }
+
+    var v=document.getElementById('verdict');
+    if(a&&b){
+      var diff=(a.rate-b.rate)/b.rate*100;
+      var head=diff>=0?'A 的真实时薪比 B 高 ':'A 的真实时薪比 B 低 ';
+      var line=head+Math.abs(diff).toFixed(1)+'%。';
+      var note='';
+      if(Math.abs(diff)<10){
+        note='真实时薪差距小于 10%，这个差别不值得纠结——选那个让你更想去的，或者选那条对长期更有利的路径。';
+      }else if(a.base>b.base && diff<0){
+        note='注意：A 的月薪更高，但真实时薪反而更低。这种情况通常意味着 A 用更多的工时和通勤换来了那点月薪差。';
+      }else if(a.base<b.base && diff>0){
+        note='注意：B 的月薪更高，但真实时薪反而更低。折算成每小时之后，A 其实更划算。';
+      }
+      v.innerHTML=line+(note?'<br><br>'+note:'');
+    }else if(a){
+      v.innerHTML='你的真实时薪约为 <b>'+money(a.rate)+'/小时</b>，全年投入约 '+Math.round(a.totalHours).toLocaleString('zh-CN')+' 小时。<br><br>把 Offer B 填上就能做对比。';
+    }else{
+      v.innerHTML='填写月 base 后会自动计算。建议至少填一项。';
+    }
+  }
+
+  ['a','b'].forEach(function(side){
+    ids.forEach(function(k){
+      var el=document.getElementById(side+'-'+k);
+      if(el){ el.addEventListener('input',render); el.addEventListener('change',render); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

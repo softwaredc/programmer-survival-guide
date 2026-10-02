@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>简历体检 · 程序员生存指南</title>
+<style>
+:root{
+  --bg:#fff;--surface:#f7f8fa;--border:#e3e5e8;--text:#1c1e21;--muted:#6b7280;
+  --accent:#2563eb;--accent-weak:#eff4ff;--ok:#1d9e75;--ok-weak:#e7f5ef;
+  --err:#c0392b;--err-weak:#fdf0ee;--warn:#b45309;--warn-weak:#fdf6e7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;padding:24px 16px 64px}
+.wrap{max-width:800px;margin:0 auto}
+a.home{color:var(--muted);text-decoration:none;font-size:13px}
+a.home:hover{color:var(--accent)}
+h1{font-size:22px;font-weight:600;margin:12px 0 4px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:20px}
+textarea{width:100%;min-height:260px;padding:14px;border:1px solid var(--border);border-radius:10px;font:14px/1.8 ui-monospace,SFMono-Regular,Consolas,"Courier New",monospace;background:#fff;color:var(--text);resize:vertical}
+textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-weak)}
+.bar{display:flex;gap:10px;align-items:center;margin:12px 0 20px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);font:inherit;font-size:14px;padding:9px 18px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{opacity:.9;color:#fff}
+.btn.ghost{color:var(--muted)}
+.stat{margin-left:auto;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:520px){.sum{grid-template-columns:1fr}}
+.sum div{background:var(--surface);border-radius:10px;padding:14px 16px;text-align:center}
+.sum b{display:block;font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+.sum span{font-size:12px;color:var(--muted)}
+.iss{border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start}
+.iss.e{background:var(--err-weak);border-color:#f3d5cf}
+.iss.w{background:var(--warn-weak);border-color:#f5e3c3}
+.iss.o{background:var(--ok-weak);border-color:#c9e7dc}
+.iss .ic{flex:0 0 auto;width:20px;height:20px;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;color:#fff;margin-top:2px}
+.iss.e .ic{background:var(--err)}
+.iss.w .ic{background:var(--warn)}
+.iss.o .ic{background:var(--ok)}
+.iss .b{flex:1}
+.iss .t{font-size:14px;font-weight:500;margin-bottom:3px}
+.iss .d{font-size:13px;color:#5b5f66;line-height:1.7}
+.notice{background:var(--surface);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--muted);line-height:1.75}
+.priv{text-align:center;color:var(--muted);font-size:12px;margin-top:22px;line-height:1.8}
+footer{margin-top:28px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.8}
+a{color:var(--accent)}
+@media print{textarea,.bar{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a class="home" href="../index.html">← 返回工具列表</a>
+<h1>简历体检</h1>
+<p class="sub">把简历文字粘贴进来，自动检查一些常见问题。<b>文本不会离开你的浏览器。</b></p>
+
+<textarea id="cv" placeholder="把你的简历全文粘贴到这里…
+
+例如：
+
+张三
+电话 138-0000-0000 | 邮箱 zhangsan@example.com | GitHub: github.com/zhangsan
+
+项目经历
+XX 系统
+- 负责订单系统的开发与维护
+- 使用 Redis 优化性能
+- 熟悉 MySQL、Spring Boot
+
+提示：粘贴纯文本即可，不需要格式。"></textarea>
+
+<div class="bar">
+  <button class="btn primary" id="go">开始体检</button>
+  <button class="btn ghost" id="demo">载入示例</button>
+  <span class="stat" id="cnt">0 字</span>
+</div>
+
+<div id="out"></div>
+
+<div class="notice" style="margin-top:16px">
+  <b>这个工具做不到的事：</b>它只能做一些基于文本规则的检查（字数、关键词、是否有数字等）。
+  它<b>看不懂你的内容质量</b>，也不知道你的简历在具体岗位上合不合适。<br>
+  <b>真正有效的办法是找真人看。</b>找一个正在招人的工程师，问一句：「如果三十秒扫一眼，有什么让你不想继续看下去？」——
+  这句话比任何工具都有用。
+</div>
+
+<p class="priv">🔒 纯前端运行，不联网、不上传、不记录。刷新页面后内容即消失。</p>
+
+<footer>
+  《程序员生存指南》 · 详见 <a href="../../content/vol1/04-简历.md" style="color:var(--muted)">简历：从 0 到 HR 愿意打电话</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var DEMO='李四\n电话 138-0000-0000 | 邮箱 lisi@example.com\n求职意向：后端工程师\n\n熟练掌握 Java、Spring Boot、MySQL、Redis、Kafka\n熟悉分布式系统设计，了解微服务架构\n精通高并发处理\n\n项目经历\n在线商城系统\n- 基于 Spring Boot 开发的商城系统，实现了用户管理、商品管理、订单管理模块\n- 使用 Redis 做缓存，提升了系统性能\n- 参与了数据库表设计\n\n个人博客\n- 使用 Vue + Node.js 开发的个人博客\n- 实现了文章发布和评论功能\n\n教育经历\n某大学 计算机科学与技术 本科 2020-2024';
+
+  var cv=document.getElementById('cv'), out=document.getElementById('out'), cnt=document.getElementById('cnt');
+
+  cv.addEventListener('input',function(){
+    cnt.textContent=cv.value.length+' 字';
+  });
+
+  document.getElementById('demo').addEventListener('click',function(){
+    cv.value=DEMO; cnt.textContent=cv.value.length+' 字'; run();
+  });
+
+  document.getElementById('go').addEventListener('click',run);
+
+  function run(){
+    var t=cv.value.trim();
+    if(!t){ out.innerHTML=''; return; }
+    var issues=[];
+
+    // 字数 / 页数估算
+    var len=t.replace(/\s/g,'').length;
+    var estPages=Math.max(1,Math.ceil(len/900));
+    if(estPages>1){
+      issues.push({lv:'w',t:'简历可能超过一页',
+        d:'按纯文本密度估算约 '+estPages+' 页。对应届生和三年以内经验的程序员，<b>一页足够</b>。超过一页通常意味着取舍不够狠。'});
+    }
+
+    // 空泛形容词
+    var vague=['精通','熟练掌握','熟练掌握','深刻理解','深入了解','熟悉'].filter(function(w){
+      return t.indexOf(w)>=0;
+    });
+    if(vague.length){
+      issues.push({lv:'e',t:'出现了 '+vague.length+' 个无法验证的形容词：'+vague.join('、'),
+        d:'「熟悉 MySQL」毫无信息量——<b>每个人都会写</b>。更严重的是：写了「精通」就要按精通的水平被追问。<b>删掉所有评价性形容词，让产出替你说话。</b>'});
+    }
+
+    // 是否有数字
+    var hasNum=/[0-9]+\s*(%|ms|秒|s\b|倍|万|QPS|qps|TPS|人|台|GB|MB|w\b)/.test(t);
+    if(!hasNum){
+      issues.push({lv:'e',t:'几乎没有找到可量化的结果',
+        d:'没有出现「延迟降低 X ms」「QPS 提升 X%」「机器数减少 X 台」这类数字。<b>每一个项目描述都应该有一个数字。</b>如果确实没有，用对比（「从 X 变成 Y」）或规模（「支撑 XX 请求量」）。'});
+    }
+
+    // 弱动词密度
+    var weak=['负责','参与','协助','配合','完成'].filter(function(w){return t.indexOf(w)>=0;});
+    if(weak.length>=2){
+      issues.push({lv:'w',t:'描述性动词偏弱：'+weak.slice(0,3).join('、')+'…',
+        d:'「负责 XX 模块的开发」是在描述<b>职责</b>，不是在描述<b>结果</b>。改成「问题 → 你的动作 → 结果」的结构，例如「定位到 N+1 查询，改为批量查询，首屏加载从 3.2s 降到 480ms」。'});
+    }
+
+    // 联系方式
+    if(!/\d{11}|\d{3}-\d{4}-\d{4}/.test(t)){
+      issues.push({lv:'e',t:'没有找到电话号码',d:'检查是否遗漏了联系方式。'});
+    }
+    if(!/[\w.\-]+@[\w.\-]+/.test(t)){
+      issues.push({lv:'e',t:'没有找到邮箱',d:'检查是否遗漏了邮箱。'});
+    }
+    if(!/github|GitHub|GITHUB|gitee|blog|博客|个人主页/.test(t)){
+      issues.push({lv:'w',t:'建议加上 GitHub / 个人主页链接',
+        d:'技术岗放一个 GitHub 或技术博客链接非常加分。<b>前提</b>是它得有内容——空账号不如不放。'});
+    }
+
+    // 私有信息
+    var priv=['身高','体重','婚姻','政治面貌','民族','年龄','籍贯'].filter(function(w){return t.indexOf(w)>=0;});
+    if(priv.length){
+      issues.push({lv:'w',t:'发现了与技术岗无关的个人信息：'+priv.join('、'),
+        d:'技术岗不需要这些，而且可能引入无意识的偏见。<b>删掉</b>。'});
+    }
+
+    // 项目数量
+    var heads=(t.match(/^[^（(\-·\s][^\n]{2,30}$/gm)||[]).length;
+    if(heads<3){
+      issues.push({lv:'w',t:'看起来项目/经历段落偏少',
+        d:'建议 2~3 个能讲清楚的项目，<b>每个都要能经得起三十分钟的追问</b>。讲不清楚的项目不要写。'});
+    }
+
+    // 陈旧内容检测
+    if(/课程设计|课设|期末|作业|实训/.test(t)){
+      issues.push({lv:'w',t:'出现了课程相关字样',
+        d:'如果是面向社招，课设通常不足以作为项目经历。如果是应届且项目确实完整，可以写，<b>但要说清楚它的规模和结果</b>，而不是写成「完成了课程作业」。'});
+    }
+
+    // 通过项
+    if(!vague.length){ issues.push({lv:'o',t:'没有空泛的能力形容词',d:'很好。用词克制比堆砌形容词有效得多。'}); }
+    if(hasNum){ issues.push({lv:'o',t:'出现了可量化的数字',d:'这是简历里最有说服力的部分。请确保面试时能说清这些数字是怎么来的。'}); }
+    if(len>300&&len<1600){ issues.push({lv:'o',t:'篇幅适中',d:'约 '+len+' 字，排版后大概率在一页左右。'}); }
+
+    var e=issues.filter(function(i){return i.lv==='e'}).length;
+    var w=issues.filter(function(i){return i.lv==='w'}).length;
+    var o=issues.filter(function(i){return i.lv==='o'}).length;
+
+    out.innerHTML=
+      '<div class="sum">'+
+        '<div><b style="color:var(--err)">'+e+'</b><span>需要修改</span></div>'+
+        '<div><b style="color:var(--warn)">'+w+'</b><span>建议优化</span></div>'+
+        '<div><b style="color:var(--ok)">'+o+'</b><span>做得不错</span></div>'+
+      '</div>'+
+      issues.map(function(i){
+        return '<div class="iss '+i.lv+'"><span class="ic">'+({e:'!',w:'~',o:'✓'}[i.lv])+'</span>'+
+               '<div class="b"><div class="t">'+i.t+'</div><div class="d">'+i.d+'</div></div></div>';
+      }).join('');
+  }
+})();
+</script>
+</body>
+</html>

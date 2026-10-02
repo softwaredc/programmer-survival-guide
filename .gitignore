@@ -1,0 +1,41 @@
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.history/
+
+# Python（本仓库脚本零依赖，保留此段仅为通用性）
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Node（本仓库工具零依赖，保留此段仅为通用性）
+node_modules/
+package-lock.json
+yarn.lock
+
+# 临时与输出
+*.log
+*.tmp
+tmp/
+dist/
+build/
+_site/
+
+# 本地环境
+.env
+.env.local
+
+# 案例投稿的草稿（未脱敏的原件不应提交）
+cases/.drafts/
+*.private.md

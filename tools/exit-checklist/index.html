@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>离职倒计时清单 · 程序员生存指南</title>
+<style>
+:root{
+  --bg:#fff;--surface:#f7f8fa;--border:#e3e5e8;--text:#1c1e21;--muted:#6b7280;
+  --accent:#2563eb;--accent-weak:#eff4ff;--ok:#1d9e75;--ok-weak:#e7f5ef;--warn:#b45309;--warn-weak:#fdf6e7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;padding:24px 16px 64px}
+.wrap{max-width:780px;margin:0 auto}
+a.home{color:var(--muted);text-decoration:none;font-size:13px}
+a.home:hover{color:var(--accent)}
+h1{font-size:22px;font-weight:600;margin:12px 0 4px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:20px}
+.bar{position:sticky;top:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;z-index:5}
+.bar .prog{flex:1;min-width:180px;height:8px;background:#e8eaed;border-radius:99px;overflow:hidden}
+.bar .prog i{display:block;height:100%;background:var(--ok);width:0;transition:width .25s}
+.bar .pct{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;min-width:96px}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.sec{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
+.sec h2{font-size:15px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.sec h2 .cnt{font-size:12px;font-weight:400;color:var(--muted);margin-left:auto}
+.sec .desc{font-size:13px;color:var(--muted);margin-bottom:12px}
+.item{display:flex;gap:12px;padding:11px 0;border-top:1px solid #f0f1f3;align-items:flex-start;cursor:pointer}
+.item:first-of-type{border-top:none}
+.item input{margin-top:5px;width:17px;height:17px;flex:0 0 17px;accent-color:var(--ok);cursor:pointer}
+.item .body{flex:1}
+.item .t{font-size:14px}
+.item .why{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.6}
+.item.done .t{color:var(--muted);text-decoration:line-through}
+.item.done .why{text-decoration:line-through}
+.note{background:var(--warn-weak);border-radius:10px;padding:14px 16px;font-size:13px;color:#78350f;line-height:1.8;margin-bottom:14px}
+.note b{color:var(--warn)}
+.footer-note{text-align:center;color:var(--muted);font-size:12px;margin-top:24px;line-height:1.8}
+footer{margin-top:28px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.8}
+@media print{.bar{position:static}.btn{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a class="home" href="../index.html">← 返回工具列表</a>
+<h1>离职倒计时清单</h1>
+<p class="sub">要走之前，把该确认的事一项项划掉。<b>勾选状态保存在你自己的浏览器里。</b></p>
+
+<div class="note">
+  <b>⚠️ 先说最重要的一件事</b><br>
+  离职<b>不要</b>拷贝公司的代码、文档、客户资料。可能构成侵犯商业秘密。
+  只整理<b>属于你自己</b>的东西：你的成果记录（用数据描述）、你自己写过的总结、公开分享过的内容。
+</div>
+
+<div class="bar">
+  <span class="pct" id="pct">0 / 0 已完成</span>
+  <div class="prog"><i id="prog"></i></div>
+  <button class="btn" id="btn-reset">重置</button>
+</div>
+
+<div id="list"></div>
+
+<div class="sec" style="background:var(--surface)">
+  <h2>还要记得</h2>
+  <div class="desc" style="margin-top:8px">
+    <ul style="margin-left:18px;font-size:13px;line-height:1.9">
+      <li><b>先用这两个工具核一遍</b>：<a href="../severance-calculator/index.html">裁员赔偿计算器</a>（算清楚你的钱）、本清单（别漏东西）。</li>
+      <li><b>势在必得的三件事</b>：书面确认竞业是否启动、确认期权行权窗口、确认社保缴纳月份。</li>
+      <li><b>态度上的一条</b>：全程客气。交接质量会成为你的口碑，而这个圈子比你以为的小。</li>
+    </ul>
+  </div>
+</div>
+
+<p class="footer-note">🔒 纯前端运行，不联网，勾选状态只存在你本地浏览器里。<br>清除浏览器数据会丢失记录，重要进展建议另外记一份。</p>
+
+<footer>
+  《程序员生存指南》 · 详见 <a href="../../content/vol3/08-离职交接与背调.md" style="color:var(--muted)">离职交接与背调</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var DATA=[
+    {sec:'一、确定事实（最先做）',desc:'这四件事在签字之前就要搞清楚',items:[
+      {t:'取得书面的解除通知',why:'口头通知等于没通知。要有书面文件，写明解除日期与原因'},
+      {t:'确认最后工作日',why:'它决定了工龄、社保缴纳月份、期权行权窗口的起算'},
+      {t:'确认补偿方案与支付时间',why:'金额要写死，不能写"按公司政策"'},
+      {t:'确认社保与公积金缴纳至哪个月',why:'容易出现空窗月，影响医保报销与城市资格'},
+    ]},
+    {sec:'二、钱相关的确认',desc:'每一笔都值得当场问清楚',items:[
+      {t:'用赔偿计算器核过一遍自己的数字',why:'见 tools/severance-calculator'},
+      {t:'确认未休年假的折算方式',why:'未休年假应当支付相应报酬'},
+      {t:'确认是否有未结算的加班费',why:'若有，写明金额或写明"已全部结清"'},
+      {t:'确认年终奖的处理方式',why:'离职当年是否发放、按比例还是全额，务必书面确认'},
+      {t:'签字费 / 报销款的结算',why:'这些容易被遗漏，因为金额小但确实存在'},
+    ]},
+    {sec:'三、股权与限制条款',desc:'这里是最容易错过时间窗口的地方',items:[
+      {t:'确认期权：已归属数量与最后行权日',why:'行权窗口通常只有 30~90 天，错过作废'},
+      {t:'已评估是否值得行权',why:'行权要掏现金还要交税。问自己：有这笔现金我会主动买这家公司吗？'},
+      {t:'书面确认竞业限制是否启动',why:'最关键的一项。口头说"不启动"完全没有价值'},
+      {t:'若启动：确认范围、期限、每月补偿',why:'期限上限二年；启动就必须按月支付补偿'},
+      {t:'确认是否有回购条款 / 转让限制',why:'通常写在期权协议里，不看不知道'},
+    ]},
+    {sec:'四、交接与文档',desc:'交接质量决定了你的口碑',items:[
+      {t:'列出交接清单并发邮件给接手人',why:'邮件抄送自己留存，这是你的护身符'},
+      {t:'整理负责系统的文档（架构/部署/常见故障）',why:'同时也是把"只有我会"变成影响力的方式'},
+      {t:'列出未完成事项与下一步负责人',why:'口头交接等于没有交接'},
+      {t:'移交账号与权限，回收自己的密钥',why:'包括跳板机、云平台、第三方服务的管理员权限'},
+      {t:'做一次团队内部的知识分享',why:'成本一小时，收益是一次最好的口碑投资'},
+    ]},
+    {sec:'五、证明与背调',desc:'决定你下一份工作顺不顺利',items:[
+      {t:'向 2~3 位同事/上级请求做证明人',why:'提前说，不要等到对方 HR 打电话那天'},
+      {t:'检查离职证明的内容',why:'不得写入对你的负面评价。拿到时当场核对'},
+      {t:'保存好离职证明扫描件',why:'未来入职大概率要提供'},
+      {t:'确认统一的对外口径',why:'「团队调整，协商一致离职」——对所有人用同一版本'},
+    ]},
+    {sec:'六、离职后两周内',desc:'这几件事拖久了会很麻烦',items:[
+      {t:'查询失业金申领条件并及时办理',why:'这是你在职时缴过的保险待遇，它是你的权利'},
+      {t:'办理社保接续（灵活就业参保或新单位接续）',why:'不要让医保出现空白期'},
+      {t:'办理公积金封存 / 转移 / 提取',why:'这是实实在在的一笔钱'},
+      {t:'导出社保缴费记录与个税记录',why:'未来入职或办理城市资格时都要用'},
+      {t:'更新简历与个人资料',why:'趁这段经历还新鲜，把成果记录写下来'},
+    ]},
+  ];
+
+  var KEY='psg_exit_checklist_v1';
+  var state={};
+  try{ state=JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ state={}; }
+
+  var list=document.getElementById('list');
+  DATA.forEach(function(g,gi){
+    var box=document.createElement('div');
+    box.className='sec';
+    var html='<h2>'+g.sec+'<span class="cnt" data-cnt="'+gi+'"></span></h2><div class="desc">'+g.desc+'</div>';
+    g.items.forEach(function(it,ii){
+      var id=gi+'-'+ii;
+      html+='<label class="item'+(state[id]?' done':'')+'">'+
+            '<input type="checkbox" data-id="'+id+'"'+(state[id]?' checked':'')+'>'+
+            '<span class="body"><span class="t">'+it.t+'</span>'+
+            '<span class="why">'+it.why+'</span></span></label>';
+    });
+    box.innerHTML=html;
+    list.appendChild(box);
+  });
+
+  function update(){
+    var all=document.querySelectorAll('.item input');
+    var done=document.querySelectorAll('.item input:checked');
+    var pct=all.length?Math.round(done.length/all.length*100):0;
+    document.getElementById('pct').textContent=done.length+' / '+all.length+' 已完成';
+    document.getElementById('prog').style.width=pct+'%';
+    document.querySelectorAll('[data-cnt]').forEach(function(el){
+      var gi=el.getAttribute('data-cnt');
+      var inputs=document.querySelectorAll('.item input[data-id^="'+gi+'-"]');
+      var dn=document.querySelectorAll('.item input[data-id^="'+gi+'-"]:checked');
+      el.textContent=dn.length+' / '+inputs.length;
+    });
+  }
+
+  document.addEventListener('change',function(e){
+    if(!e.target.matches('.item input')) return;
+    var id=e.target.getAttribute('data-id');
+    state[id]=e.target.checked;
+    e.target.closest('.item').classList.toggle('done',e.target.checked);
+    try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(err){}
+    update();
+  });
+
+  document.getElementById('btn-reset').addEventListener('click',function(){
+    if(!confirm('确定要清空所有勾选记录吗？此操作不可撤销。')) return;
+    state={};
+    try{ localStorage.removeItem(KEY); }catch(err){}
+    document.querySelectorAll('.item input').forEach(function(i){i.checked=false});
+    document.querySelectorAll('.item').forEach(function(el){el.classList.remove('done')});
+    update();
+  });
+
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+name: 纠错与补漏
+description: 指出过时信息、错误引用、失效链接，或补充一个常见错误
+title: "纠错：<简述>"
+labels: ["correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你帮忙纠错。**如果纠正的是实质性内容，请附上依据**（法条链接、官方文件、或其他可靠来源）。
+
+        「我觉得这里写得不对」但没有依据的反馈，我们会感谢你，但不一定会改。
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 类型
+      options:
+        - 法条引用错误 / 条号对不上
+        - 规定或流程已过时
+        - 薪资或数据明显过时
+        - 失效链接
+        - 错别字 / 表述不清
+        - 遗漏了一个常见错误（补进某章第 5 段）
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: file
+    attributes:
+      label: 涉及的文件
+      description: 例如 content/vol3/02-赔偿金怎么算.md
+      placeholder: content/vol3/02-赔偿金怎么算.md
+    validations:
+      required: false
+
+  - type: textarea
+    id: current
+    attributes:
+      label: 现在写的是什么
+      description: 原文摘录
+    validations:
+      required: true
+
+  - type: textarea
+    id: should
+    attributes:
+      label: 应该改成什么
+    validations:
+      required: true
+
+  - type: textarea
+    id: source
+    attributes:
+      label: 依据来源
+      description: |
+        实质性纠错必须提供依据。可以是官方链接、法条原文、或你自己的真实经历。
+        如果是经验性判断（不是事实纠错），也请说明这一点。
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 确认
+      options:
+        - label: 我没有在反馈中泄露任何公司真名或个人身份信息
+          required: true
